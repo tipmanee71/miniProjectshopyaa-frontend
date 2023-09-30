@@ -6,12 +6,17 @@
           <v-card-title class="text-h2">เข้าสู่ระบบ</v-card-title>
 
           <v-card-text>
-            <v-form ref="from" v-model="valid" lazy-validation>
+            <v-form
+              @submit.prevent="performLogin"
+              ref="from"
+              v-model="isLoggingIn"
+              :v-bind="valid"
+              lazy-validation
+            >
               <v-text-field
-                :rules="nameRules"
                 :counter="20"
-                placeholder="ชื่อผู้ใช้งาน"
-                v-model="username"
+                placeholder="อีเมล"
+                v-model="usersEmail"
                 required
                 outlined
                 hide-details
@@ -21,8 +26,7 @@
 
               <v-text-field
                 placeholder="รหัสผ่าน"
-                v-model="password"
-                type="password"
+                v-model="usersPass"
                 :rules="passwordRules"
                 required
                 hide-details
@@ -33,11 +37,10 @@
 
               <v-row>
                 <v-btn
-                  :disabled="!valid"
                   type="submit"
                   color="#45C69F"
                   class="login-sub mx-auto"
-                  @click="login"
+                  @click="performLogin"
                 >
                   เข้าสู่ระบบ
                 </v-btn>
@@ -57,24 +60,57 @@
 
 <script>
 export default {
-  data: () => ({
-    valid: true,
-    username: '',
-    nameRules: [
-      (v) => !!v || 'กรุณากรอกชื่อผู้ใช้งาน',
-      (v) => (v && v.length <= 10) || 'ห้ามกรอกชื่อผุ้ใช้งานเกิน20ตัวอักษร'
-    ],
+  data() {
+    return {
+      valid: true,
+      usersEmail: '',
+      usersPass: '',
+      isLoggingIn: false,
+     
 
-    password: '',
-    passwordRules: [(v) => !!v || 'กรุณากรอกรหัสผ่าน']
-  }),
+      // nameRules: [
+      //   (v) => !!v || 'กรุณากรอกชื่อผู้ใช้งาน',
+      //   (v) => (v && v.length <= 10) || 'ห้ามกรอกชื่อผู้ใช้งานเกิน 20 ตัวอักษร'
+      // ],
+      passwordRules: [(v) => !!v || 'กรุณากรอกรหัสผ่าน']
+    }
+  },
   methods: {
-    login() {
-      if (this.$refs.form.validate(true)) {
-        console.log('Logging in with username:', this.username)
-        console.log('Logging in with password:', this.password)
-        this.$EvenBus.$emit('getUsername')
-        this.$router.push({ path: '/home' }).catch(() => {})
+    async performLogin() {
+      this.isLoggingIn = true
+      try {
+        var response = await this.axios.post(
+          'http://localhost:9000/user/login',
+          {
+            usersEmail: this.usersEmail,
+            usersPass: this.usersPass
+          }
+        )
+
+        if (response.status === 200) {
+          // Login successful
+          // this.userAvatar = response.data.avatar
+          localStorage.setItem('auth', JSON.stringify(response.data))
+          const auth = JSON.parse(localStorage.getItem('auth'))
+          console.log(auth)
+
+          this.$router
+            .push({ path: '/' })
+            .then(() => {
+              window.location.reload()
+            })
+            .catch(() => {})
+
+          console.log('Login successful')
+        } else {
+          // Handle other response statuses (e.g., 401 for unauthorized)
+          console.log('Login failed')
+        }
+      } catch (error) {
+        // Handle any network or server errors
+        console.error('Error:', error.message)
+      } finally {
+        this.isLoggingIn = false
       }
     },
     register() {
@@ -85,7 +121,7 @@ export default {
 </script>
 
 <style scoped>
-.card {
+AC.card {
   justify-content: center;
   align-items: center;
 }

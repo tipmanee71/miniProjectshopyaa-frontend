@@ -1,33 +1,36 @@
 <template>
   <div>
-    <h1>PRAEWA PHAMACY</h1>
+    <h1 class="font-weight-black">PRAEWA PHAMACY</h1>
     <p>ihkodSfnlblkfbls/Kdeb r/b k; em/k bkldflgwr;</p>
-    <button class="slide-button" @click="slideDown">เริ่มสั่งซื้อ</button>
-    <button class="slide-button" @click="login">เข้าสู่ระบบ</button>
+    <v-btn color="#45c69f">เริ่มสั่งซื้อ</v-btn>
+    <!-- <v-btn color="#45c69f" @click="login" v-if="!loggedIn">เข้าสู่ระบบ</v-btn> -->
   </div>
 </template>
 
 <script>
 export default {
-  methods: {
-    login() {
-      this.$router.push({ path: '/login' }).catch(() => {})
+  data() {
+    return {
+      // loggedIn: false
     }
+  },
+  methods: {
+    // login() {
+    //   this.loggedIn = true
+    //   this.$router.push({ path: '/login' }).catch(() => {})
+    // }
   }
 }
 </script>
 
 <style scoped>
-.slide-button {
-  background-color: #45c69f; /* Button background color */
-  color: white; /* Text color */
+/* .slide-button {
+  background-color: #45c69f; 
+  color: white;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
   border-radius: 5px;
   font-size: 16px;
-}
-.slide-button:hover {
-  background-color: #349879; /* Change color on hover */
-}
+} */
 </style>

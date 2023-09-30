@@ -1,36 +1,35 @@
-<!-- //AllProduct.vue -->
 <template>
   <v-container>
     <v-row>
       <v-col
-        v-for="(product, index) in products"
-        :key="index"
+        v-for="product in products"
+        :key="product.id"
         cols="12"
         sm="6"
         md="4"
         lg="3"
       >
-        <router-link :to="'/product/' + product.id" :key="product.id">
+        <div @click="handleProductClick(product)">
           <v-card class="mx-auto" max-width="400">
             <v-img
               class="white--text align-end"
               height="200px"
-              :src="product.imageUrl"
+              :src="'data:image/jpeg;base64,' + product.pdImage"
+              alt="Product Image"
             >
-              <v-card-title>{{ product.name }}</v-card-title>
+              <v-card-title>{{ product.pdName }}</v-card-title>
             </v-img>
 
             <v-card-text class="text--primary">
-              <!-- <div>{{ product.description }}</div> -->
-              <div>วันที่ผลิด: {{ product.manufactureDate }}</div>
-              <div>วันที่หมดอายุ: {{ product.expiryDate }}</div>
-              <div>ผู้ผลิต: {{ product.manufacturer }}</div>
+              <div>วันที่ผลิด: {{ formatDate(product.pdMfg) }}</div>
+              <div>วันที่หมดอายุ: {{ formatDate(product.pdExp) }}</div>
+              <div>ผู้ผลิต: {{ product.pdManufacturer }}</div>
             </v-card-text>
 
             <v-card-actions>
               <v-row>
                 <v-col cols="6" class="text-left">
-                  <v-btn color="orange" text> {{ product.price }} </v-btn>
+                  <v-btn color="orange" text> {{ product.pdPrice }} </v-btn>
                 </v-col>
                 <v-col cols="6" class="text-right">
                   <svg-icon type="mdi" :path="path"></svg-icon>
@@ -38,7 +37,7 @@
               </v-row>
             </v-card-actions>
           </v-card>
-        </router-link>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -47,19 +46,50 @@
 <script>
 import SvgIcon from '@jamescoyle/vue-icon'
 import { mdiCartArrowUp } from '@mdi/js'
-import { productData } from '../store/productData.js'
 
 export default {
-  name: 'my-component',
+  name: 'MyComponent',
   components: {
     SvgIcon
   },
 
-  data() {
-    return {
-      path: mdiCartArrowUp,
-      products: productData
+  data: () => ({
+    path: mdiCartArrowUp,
+    products: [],
+    pdImage: '', // Define pdImage here
+    pdName: '', // Define pdName here
+    pdManufacturer: '', // Define pdManufacturer here
+    pdExp: '', // Define pdExp
+    pdMfg: '', // Define pdMfg here
+    pdPrice: 0 // Define pdPrice here
+  }),
+
+  methods: {
+    handleProductClick(product) {
+      this.$router.push({ name: 'ProductDetail', params: { id: product.id } })
+    },
+
+    formatDate(date) {
+      // Format a JavaScript Date object to a readable date string
+      const options = { year: 'numeric', month: 'long', day: 'numeric' }
+      return new Date(date).toLocaleDateString('en-US', options)
+    },
+
+    async fetchDataFromBackend() {
+      this.products = []
+      try {
+        var response = await this.axios.get('http://localhost:9000/products')
+        this.products = response.data
+        console.log('data ===>', response)
+      } catch (error) {
+        console.error('Error fetching products:', error)
+      }
     }
+  },
+
+  mounted() {
+    // Fetch data from the backend when the component is mounted
+    this.fetchDataFromBackend()
   }
 }
 </script>

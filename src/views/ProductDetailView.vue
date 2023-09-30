@@ -10,36 +10,48 @@
             <v-row justify="space-between">
               <v-col cols="6">
                 <v-img
+                  v-if="product"
                   class="white--text align-end"
                   width="500px"
-                  height="350px"
+                  height="500px"
                   style="
                     margin-left: 3%;
                     justify-content: center;
                     align-items: center;
                   "
-                  :src="product.imageUrl"
+                  :src="'data:image/jpeg;base64,' + product.pdImage"
                   alt="Product Image"
                 />
               </v-col>
 
               <v-col cols="6">
-                <v-card-title>
-                  {{ product.name }}
+                <v-card-title v-if="product">
+                  {{ product.pdName }}
                 </v-card-title>
 
                 <v-card-text class="text--primary">
-                  <div>{{ product.description }}</div>
-                  <div>วันที่ผลิด: {{ product.manufactureDate }}</div>
-                  <div>วันที่หมดอายุ: {{ product.expiryDate }}</div>
-                  <div>ผู้ผลิต: {{ product.manufacturer }}</div>
-                  <div>ราคา:{{ product.price }}</div>
+                  <div v-if="product">{{ product.pdDescription }}</div>
+
+                  <div v-if="product">
+                    วันที่ผลิด: {{ formatDate(product.pdMfg) }}
+                  </div>
+
+                  <div v-if="product">
+                    วันที่หมดอายุ: {{ formatDate(product.pdExp) }}
+                  </div>
+
+                  <div v-if="product">
+                    ผู้ผลิต: {{ product.pdManufacturer }}
+                  </div>
+
+                  <div v-if="product">ราคา: {{ product.pdPrice }}</div>
                 </v-card-text>
               </v-col>
               <v-col cols="6"></v-col>
               <v-col cols="3">
                 <Count
-                  :count="count"
+                  v-model="cartsQty"
+                  :count="cartsQty"
                   @increment="onIncrement"
                   @decrement="onDecrement"
                 />
@@ -60,7 +72,7 @@
 </template>
 
 <script>
-import { productData } from '@/store/productData'
+import axios from 'axios'
 import Count from '../components/Count.vue'
 
 export default {
@@ -68,38 +80,63 @@ export default {
     Count
   },
 
-  props: ['id'], // This prop is automatically passed by Vue Router
+  props: ['id'],
   data() {
     return {
       product: null,
-      count: 1
+      cartsQty: 1
     }
   },
   created() {
-    // Fetch product details based on the 'id' route parameter
     this.fetchProductDetails(this.id)
   },
   methods: {
+    formatDate(date) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' }
+      return new Date(date).toLocaleDateString('en-US', options)
+    },
     fetchProductDetails(id) {
-      // Simulate fetching data based on 'id'
-      // Replace this with actual API calls in a real application
-      const selectedProduct = productData.find(
-        (product) => product.id === parseInt(id)
-      )
-      if (selectedProduct) {
-        this.product = selectedProduct
-      }
+      axios
+        .get(`http://localhost:9000/products/${id}`)
+        .then((response) => {
+          this.product = response.data
+        })
+        .catch((error) => {
+          console.error('Error fetching product details:', error)
+        })
     },
     onIncrement(newCount) {
-      this.count = newCount
+      this.cartsQty = newCount
     },
     onDecrement(newCount) {
-      this.count = newCount
+      this.cartsQty = newCount
     },
-    addToCart() {
-      // Implement your logic to add the product to the cart here
-      // Youcan use this.product and this.count to determine what to add to the cart
-      console.log('Added to cart:', this.product.name, 'Quantity:', this.count)
+
+    async addToCart() {
+      try {
+        const response = await axios.post(
+          `http://localhost:9000/add-to-cart/${this.product.id}?quantity=${this.cartsQty}`,
+          {
+            quantity: this.cartsQty
+          }
+        )
+        if (response.data) {
+          localStorage.setItem('cartProduct', JSON.stringify(response.data))
+
+          console.log('Add to cart response:', response.data)
+          console.log(
+            'Added to cart:',
+            this.product.id,
+            'Quantity:',
+            this.cartsQty
+          )
+          alert('Product added to cart successfully!')
+        } else {
+          console.log('Invalid response data')
+        }
+      } catch (error) {
+        console.log('error', error)
+      }
     }
   }
 }

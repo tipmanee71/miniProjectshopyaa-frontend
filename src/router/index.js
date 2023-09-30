@@ -5,9 +5,9 @@ import RegisterView from '../views/RegisterView.vue'; // ต้องนำเ�
 import HomeView from '../views/HomeView.vue'
 import AllProductView from '../views/AllProductView.vue'
 import ProductDetailView from '@/views/ProductDetailView.vue'
-import ProductDetail from'../components/ProductDetail.vue'
 import ContactView from '../views/ContactView.vue'
 import CartView from '../views/CartView.vue'
+import success from '../components/Success.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -26,11 +26,12 @@ const routes = [
     name: 'register',
     component: RegisterView
   },
-  {
-  path: '/home',
-  name: 'home',
-  component: HomeView 
-},
+    {
+    path: '/success',
+    name: 'success',
+    component: success
+  },
+
 {
   path: '/allproduct',
   name: 'allproduct',
@@ -49,10 +50,10 @@ const routes = [
 },
 
 {
-  path: '/product/:id',
-  component: ProductDetailView,
-  // name: 'ProductDetail',
-  props: true,
+   path: '/product/:id',
+    name: 'ProductDetail', // Make sure the name matches
+    component: ProductDetailView,
+    props: true,
 },
 
 

@@ -7,48 +7,51 @@
           color="indigo"
           label="เลือกทั้งหมด"
           value="indigo"
+          @change="selectAllItems"
         ></v-checkbox>
       </v-card-actions>
     </v-col>
 
     <v-col cols="12">
       <v-card
+        v-for="item in cartItems"
+        :key="item.id"
         max-width="100%"
         style="border-radius: 15px; background-color: #ace5f8"
       >
         <v-row justify="center" align="center">
-          <!-- Center both horizontally and vertically -->
           <v-col cols="2">
             <v-img
               class="white--text align-end"
               width="200px"
               height="200px"
               style="margin-left: 3%"
-              :src="product.imageUrl"
+              :src="
+                item.product.pdImage
+                  ? 'data:image/jpeg;base64,' + item.product.pdImage
+                  : ''
+              "
               alt="Product Image"
             />
           </v-col>
 
-          <v-col cols="4">
+          <v-col cols="3">
             <v-card-title>
-              {{ product.name }}
+              {{ item.product.pdName }}
             </v-card-title>
           </v-col>
 
-          <v-col cols="2">
-            {{ product.price }}
-          </v-col>
+          <v-col cols="2"> ราคา {{ item.product.pdPrice }} บาท</v-col>
 
           <v-col cols="2">
-            <Count
-              :count="count"
-              @increment="onIncrement"
-              @decrement="onDecrement"
-            />
+            <h4>จำนวน: {{ item.cartsQty }}</h4>
+          </v-col>
+          <v-col cols="2">
+            <h3>ราคารวม: {{ item.product.pdPrice * item.cartsQty }}</h3>
           </v-col>
 
           <v-card-actions>
-            <v-checkbox v-model="selectAll" color="indigo" value="indigo">
+            <v-checkbox v-model="item.selected" color="indigo" value="indigo">
             </v-checkbox>
           </v-card-actions>
         </v-row>
@@ -63,18 +66,16 @@
           :elevation="8"
         >
           <v-row justify="space-between">
-            <v-col cols="2" class="d-flex justify-start" style="margin-left: 2%"
-              >รวม
+            <v-col
+              cols="2"
+              class="d-flex justify-start"
+              style="margin-left: 2%"
+            >
+              รวมทั้งสิ้น :{{ selectedTotalPrice }} บาท
             </v-col>
-            <v-col cols="4">iราคา</v-col>
-            <v-col cols="4" class="d-flex justify-end" style="">
-              <v-btn
-                @click="orderProduct"
-                color="#7D91DC"
-                style="margin-right: auto; margin-left: 50%"
-              >
-                สั่งซื้อ
-              </v-btn>
+
+            <v-col cols="4" class="d-flex justify-end">
+              <v-btn @click="orderProduct" color="#7D91DC"> สั่งซื้อ </v-btn>
             </v-col>
             <v-dialog v-model="showSuccess" max-width="500px">
               <div class="text-center">
@@ -91,40 +92,89 @@
     </v-col>
   </v-row>
 </template>
-<script>
-import Count from './Count.vue' // Import the Count component
 
+<script>
+import Count from './Count.vue'
+import axios from 'axios'
 export default {
   components: {
     Count
   },
-  props: {
-    product: Object // Prop to pass the product data to the card
-  },
+  props: {},
   data() {
     return {
-      count: 1,
-      selectAll: false, // Initialize selectAll to false
-      showSuccess: false
+      cartItems: [],
+      cartsQty: [],
+      selectAll: false,
+      showSuccess: false,
+      product: {}
+    }
+  },
+  computed: {
+    isAuth() {
+      return false
+    }, // A computed property with no setter }, },
+    selectedTotalPrice() {
+      return this.cartItems.reduce((total, item) => {
+        if (item.selected) {
+          return total + item.product.pdPrice * item.cartsQty
+        }
+        return
+        total
+      }, 0)
+    },
+    isAuth() {
+      return false
     }
   },
   methods: {
-    onIncrement(newCount) {
-      this.count = newCount
-    },
-    onDecrement(newCount) {
-      this.count = newCount
-    },
-    addToCart() {
-      // Implement your logic to add the product to the cart here
-      // You can use this.product and this.count to determine what to add to the cart
-      console.log('Added to cart:', this.product.name, 'Quantity:', this.count)
-    },
     orderProduct() {
-      setTimeout(() => {
+      // Check if at least one item is selected
+      const isAtLeastOneItemSelected = this.cartItems.some(
+        (item) => item.selected
+      )
+      if (isAtLeastOneItemSelected) {
+        // If at least one item is selected, show thesuccess message
         this.showSuccess = true
-      }, 1000)
+      } else {
+        // If no item is selected, youcan show an error message or take appropriate action
+        // For example, you can setan error message property and display it to the user.
+        alert('กรุณาเลือกอย่างน้อยหนึ่งรายการก่อนสั่งซื้อ!', this.errorMessage)
+      }
+    },
+    // ... (your othermethods) ...
+
+    selectAllItems() {
+      for (const item of this.cartItems) {
+        item.selected = this.selectAll
+      }
+    },
+    checkAuth() {
+      // Implement authentication logic here
+    },
+
+    addToCart() {
+      console.log(
+        'Added to cart:',
+        this.product.pdName,
+        'Quantity:',
+        this.item.cartsQty
+      )
     }
+  },
+  created() {
+    // Fetch cart items from the API endpoint
+    axios
+      .get('http://localhost:9000/cart')
+      .then((response) => {
+        this.cartItems = response.data.map((item) => {
+          item.cartsQty
+          return item
+        })
+      })
+      .catch((error) => {
+        console.error('Error fetching cart items:', error)
+      })
   }
 }
 </script>

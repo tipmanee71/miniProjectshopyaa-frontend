@@ -18,17 +18,16 @@ import Register from '@/components/Register.vue' // Adjust the import path based
 import ImgLogin from '@/components/ImgLogin.vue'
 export default {
   components: {
-    Register, // Register the Login component for use in the template
+    Register,
     ImgLogin
   }
 }
 </script>
 
-<style scoped>
+<style>
 .fromregis {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 10%;
 }
 </style>
