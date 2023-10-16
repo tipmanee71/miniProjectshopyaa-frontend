@@ -1,12 +1,14 @@
 <template>
-  <v-row justify="space-between" style="background-color: #ace5f8">
-    <v-col cols="6" class="fromlogin">
-      <Login />
-    </v-col>
-    <v-col cols="6">
-      <ImgLogin />
-    </v-col>
-  </v-row>
+ 
+    <v-row justify="space-between" style="background-color: #ace5f8">
+      <v-col cols="6" class="fromlogin">
+        <Login />
+      </v-col>
+      <v-col cols="6">
+        <ImgLogin />
+      </v-col>
+    </v-row>
+ 
 </template>
 
 <script>
@@ -26,4 +28,5 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 </style>

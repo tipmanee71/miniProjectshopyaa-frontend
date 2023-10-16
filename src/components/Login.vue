@@ -3,8 +3,9 @@
     <v-row class="card">
       <v-col cols="12">
         <v-card class="card-size">
-          <v-card-title class="text-h2">เข้าสู่ระบบ</v-card-title>
-
+          <v-card-title class="text-h2" style="color: #06275f"
+            >เข้าสู่ระบบ</v-card-title
+          >
           <v-card-text>
             <v-form
               @submit.prevent="performLogin"
@@ -36,19 +37,22 @@
               </v-text-field>
 
               <v-row>
-                <v-btn
-                  type="submit"
-                  color="#45C69F"
-                  class="login-sub mx-auto"
-                  @click="performLogin"
-                >
-                  เข้าสู่ระบบ
-                </v-btn>
+                <v-card class="login-sub mx-auto" type="submit">
+                  <v-btn
+                    @click="performLogin"
+                    style="font-size: 40px"
+                    color="#45C69F"
+                  >
+                    เข้าสู่ระบบ
+                  </v-btn>
+                </v-card>
               </v-row>
 
-              <v-row>
-                <h6>ยังไม่ได้ลงทะเบียนบัญชี</h6>
-                <h6 @click="register">ไปที่หน้าลงทะเบียน</h6>
+              <v-row justify="center">
+                <h5>ยังไม่ได้ลงทะเบียนบัญชี--</h5>
+                <h3 @click="register" style="font-weight: bold; color: #06275f">
+                  ไปที่หน้าลงทะเบียน
+                </h3>
               </v-row>
             </v-form>
           </v-card-text>
@@ -66,7 +70,6 @@ export default {
       usersEmail: '',
       usersPass: '',
       isLoggingIn: false,
-     
 
       // nameRules: [
       //   (v) => !!v || 'กรุณากรอกชื่อผู้ใช้งาน',
@@ -103,11 +106,9 @@ export default {
 
           console.log('Login successful')
         } else {
-          // Handle other response statuses (e.g., 401 for unauthorized)
           console.log('Login failed')
         }
       } catch (error) {
-        // Handle any network or server errors
         console.error('Error:', error.message)
       } finally {
         this.isLoggingIn = false
@@ -121,16 +122,21 @@ export default {
 </script>
 
 <style scoped>
-AC.card {
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.card {
   justify-content: center;
   align-items: center;
 }
 .card-size {
-  height: 400px;
+  height: 450px;
+  border: 2px solid #ccc;
   width: 100%;
   padding: auto;
   margin: 5%;
-
+  border-radius: 20px;
   justify-content: center;
   align-items: center;
 }
@@ -141,7 +147,7 @@ AC.card {
 
 .custom-input {
   border: 2px solid #ccc;
-  background-color: #7d91dc;
+  background-color: #bac6f3;
   /* Background color */
   border-radius: 20px;
   /* Border radius (rounded corners) */
@@ -160,5 +166,6 @@ AC.card {
   width: 60%;
   text-align: center;
   margin-top: 3%;
+  margin-bottom: 3%;
 }
 </style>

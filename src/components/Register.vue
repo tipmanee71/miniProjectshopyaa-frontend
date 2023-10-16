@@ -2,10 +2,17 @@
   <v-container>
     <v-row class="card">
       <v-col cols="12">
-        <v-card class="card-size">
-          <v-card-title class="text-h2">เพิ่มบัญชีผู้ใช้งาน</v-card-title>
+        <v-card class="cardregis-size">
+          <v-card-title class="text-h2" style="color: #06275f"
+            >เพิ่มบัญชีผู้ใช้งาน</v-card-title
+          >
           <v-card-text>
-            <v-form ref="form" :value="isFormValid" lazy-validation>
+            <v-form
+              ref="form"
+              :value="isFormValid"
+              lazy-validation
+              style="margin: 3%"
+            >
               <v-text-field
                 placeholder="ชื่อผู้ใช้งาน"
                 v-model="usersName"
@@ -68,6 +75,7 @@
                   type="submit"
                   color="#45C69F"
                   class="regis-sub mx-auto"
+                  style="font-size: 40px"
                   @click.prevent="submitForm"
                 >
                   ลงทะเบียน
@@ -152,15 +160,20 @@ export default {
 </script>
 
 <style>
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
 .card {
   justify-content: center;
   align-items: center;
 }
 
-.card-size {
-  height: 100%;
+.cardregis-size {
+  height: auto;
   width: 100%;
-
+  border-radius: 20px;
+  border: 2px solid #ccc;
   margin: 5%;
   justify-content: center;
   align-items: center;
@@ -173,7 +186,8 @@ export default {
 
 .custom-input {
   border: 2px solid #ccc;
-  background-color: #7d91dc;
+  background-color: #bac6f3;
+
   /* Background color */
   border-radius: 20px;
   /* Border radius (rounded corners) */
@@ -188,9 +202,9 @@ export default {
 .regis-sub {
   padding: 10px;
   border-radius: 20px;
-
-  width: 60%;
+  width: 70%;
   text-align: center;
   margin-top: 3%;
+  margin-bottom: 3%;
 }
 </style>

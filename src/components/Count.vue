@@ -37,6 +37,10 @@ export default {
 </script>
 
 <style scoped>
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
 .count-container {
   display: flex;
   align-items: center;

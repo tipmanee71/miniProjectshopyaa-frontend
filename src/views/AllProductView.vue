@@ -30,12 +30,10 @@ export default {
 <style scoped>
 .background-all {
   background-image: url('~@/assets/bg.jpg');
-  /* margin-top: 5%; */
   background-size: cover;
   background-position: center;
   width: 100%;
   height: 100vh;
   display: flex;
-  flex-direction: column;
 }
 </style>

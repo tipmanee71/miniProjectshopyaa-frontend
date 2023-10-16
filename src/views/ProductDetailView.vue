@@ -25,26 +25,39 @@
               </v-col>
 
               <v-col cols="6">
-                <v-card-title v-if="product">
+                <v-card-title
+                  v-if="product"
+                  style="margin-top: 15px; font-size: 30px"
+                >
                   {{ product.pdName }}
                 </v-card-title>
 
-                <v-card-text class="text--primary">
-                  <div v-if="product">{{ product.pdDescription }}</div>
+                <v-card-text
+                  class="text--primary"
+                  style="font-size: 20px; margin-top: 20px"
+                >
+                  <div v-if="product" style="margin-top: 30px">
+                    {{ product.pdDescription }}
+                  </div>
 
-                  <div v-if="product">
+                  <div v-if="product" style="margin-top: 30px">
                     วันที่ผลิด: {{ formatDate(product.pdMfg) }}
                   </div>
 
-                  <div v-if="product">
+                  <div v-if="product" style="margin-top: 30px">
                     วันที่หมดอายุ: {{ formatDate(product.pdExp) }}
                   </div>
 
-                  <div v-if="product">
+                  <div v-if="product" style="margin-top: 30px">
                     ผู้ผลิต: {{ product.pdManufacturer }}
                   </div>
 
-                  <div v-if="product">ราคา: {{ product.pdPrice }}</div>
+                  <div
+                    v-if="product"
+                    style="margin-top: 30px; font-size: 20px; font-weight: bold"
+                  >
+                    ราคา: {{ product.pdPrice }}
+                  </div>
                 </v-card-text>
               </v-col>
               <v-col cols="6"></v-col>
@@ -58,7 +71,12 @@
               </v-col>
               <v-col cols="3">
                 <v-card-actions>
-                  <v-btn outlined text @click="addToCart"
+                  <v-btn
+                    outlined
+                    text
+                    @click="addToCart"
+                    color="#06275f"
+                    style="font-size: 20px; font-weight: bold"
                     >เพิ่มใส่ตระกร้า
                   </v-btn>
                 </v-card-actions>
@@ -145,6 +163,5 @@ export default {
 <style scoped>
 .background {
   background-color: #f0f0f0; /* Add your desired background color */
-  padding: 20px;
 }
 </style>

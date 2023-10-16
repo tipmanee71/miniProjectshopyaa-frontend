@@ -43,4 +43,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.background-con {
+  background-color: #fff;
+  width: 100%;
+}
+</style>

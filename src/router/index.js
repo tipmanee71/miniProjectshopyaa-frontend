@@ -8,6 +8,7 @@ import ProductDetailView from '@/views/ProductDetailView.vue'
 import ContactView from '../views/ContactView.vue'
 import CartView from '../views/CartView.vue'
 import success from '../components/Success.vue'
+import EditUserView from '../views/EditUserView'
 Vue.use(VueRouter)
 
 const routes = [
@@ -51,9 +52,15 @@ const routes = [
 
 {
    path: '/product/:id',
-    name: 'ProductDetail', // Make sure the name matches
+    name: 'ProductDetail', 
     component: ProductDetailView,
     props: true,
+},
+{
+   path: '/EditUser',
+    name: 'EditUser', 
+    component: EditUserView,
+    
 },
 
 

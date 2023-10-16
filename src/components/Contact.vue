@@ -6,16 +6,17 @@
         style="align-items: center; justify-content: center"
       >
         <v-col cols="12">
-          <h1>ติดต่อเรา</h1>
+          <h1 style="font-size: 60px">ติดต่อเรา</h1>
         </v-col>
         <v-col cols="12">
-          <p>
+          <p style="font-size: 20px">
             1080/52456 หมู่บ้านดาวยาอังคาร ตำบล ยาพิษวิเศษ อำเภอกินไม่หาย
             จังหวัดสาบสูญ 85214
           </p> </v-col
         ><v-col cols="12">
           <svg-icon type="mdi" :path="mdiPhone" class="tel-icon"></svg-icon>
           <a
+            style="font-size: 20px"
             href="https://www.facebook.com/profile.php?id=100007546908620"
             target="_blank"
           >
@@ -26,6 +27,7 @@
         <v-col cols="12">
           <svg-icon type="mdi" :path="mdiFacebook" class="face-icon"></svg-icon>
           <a
+            style="font-size: 20px"
             href="https://www.facebook.com/profile.php?id=100007546908620"
             target="_blank"
           >
@@ -39,6 +41,7 @@
             class="youtube-icon"
           ></svg-icon>
           <a
+            style="font-size: 20px"
             href="https://www.youtube.com/your-youtube-channel-url"
             target="_blank"
           >
@@ -69,6 +72,10 @@ export default {
 </script>
 
 <style>
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
 .tel-icon {
   width: 64px;
   color: #11e245;

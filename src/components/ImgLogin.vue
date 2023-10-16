@@ -4,8 +4,8 @@
     <img
       src="../assets/imglogin.png"
       alt="Login Image"
-      width="600"
-      height="600"
+      width="700"
+      height="700"
     />
   </div>
 </template>

@@ -17,7 +17,9 @@
               :src="'data:image/jpeg;base64,' + product.pdImage"
               alt="Product Image"
             >
-              <v-card-title>{{ product.pdName }}</v-card-title>
+              <v-card-title style="color: #06275f; font-weight: 800">{{
+                product.pdName
+              }}</v-card-title>
             </v-img>
 
             <v-card-text class="text--primary">
@@ -29,10 +31,9 @@
             <v-card-actions>
               <v-row>
                 <v-col cols="6" class="text-left">
-                  <v-btn color="orange" text> {{ product.pdPrice }} </v-btn>
-                </v-col>
-                <v-col cols="6" class="text-right">
-                  <svg-icon type="mdi" :path="path"></svg-icon>
+                  <v-btn color="orange" text style="font-weight: bold">
+                    {{ product.pdPrice }}
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-card-actions>
